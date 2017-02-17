@@ -1,0 +1,27 @@
+<style>
+body.page {
+    text-align: center;
+}
+</style>
+<body class="page">
+<h1>Posts</h1>
+<%= link_to 'New post', new_post_path %>
+<table style="margin: 1em auto; margin-left: auto; margin-right: auto;">
+  <tr>
+    <th>Title</th>
+    <th>Text</th>
+  </tr>
+
+  <% @posts.each do |post| %>
+    <tr>
+      <td style="width: 15%;"><%= post.title %></td>
+      <td style="width: 40%;"><%= post.text %></td>
+      <td><%= link_to 'Show', post_path(post) %></td>
+      <td><%= link_to 'Edit', edit_post_path(post) %></td>
+      <td><%= link_to 'Delete', post_path(post),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+</body>
