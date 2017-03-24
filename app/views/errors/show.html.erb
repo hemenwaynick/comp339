@@ -1,0 +1,27 @@
+<script>
+var counter = localStorage.getItem('counter');
+counter = (counter % 5) ? parseInt(counter) : 0;
+
+if (counter == 4) {
+    increment();
+    window.location = "http://localhost:3000/backoff";
+}
+
+function delayedRedirect() {
+    window.location = window.location.href;
+}
+
+function increment() {
+    counter += 1;
+    localStorage.setItem('counter', counter);
+}
+
+setTimeout('delayedRedirect()', 3000);
+increment();
+</script>
+
+<body onLoad="setTimeout('delayedRedirect()', 3000); increment();">
+
+<p><%= @error_message %></p>
+
+</body>

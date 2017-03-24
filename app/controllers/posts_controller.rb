@@ -1,10 +1,31 @@
 class PostsController < ApplicationController
+  def errorGen
+    random1 = Random.new.rand(10)
+    random2 = Random.new.rand(4)
+    if random1 == 0
+      if (random2 == 0) 
+        @error_message = "Db connection lost. Could not establish connection."
+      elsif (random2 == 1)
+        @error_message = "Db connection lost. Transaction was chosen as a deadlock victim."
+      elsif (random2 == 2)
+        @error_message = "Latency."
+      elsif (random2 == 3)
+        @error_message = "Unexpected random value."
+      end
+      render(:file => 'errors/show', :status => 404, :layout => false)
+    else
+       yield
+    end
+  end 
+
   def index
     @posts = Post.all
   end
 
   def show
-    @post = Post.find(params[:id])
+    errorGen {
+      @post = Post.find(params[:id])
+    }
   end
 
   def new
@@ -16,30 +37,36 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    errorGen {
+      @post = Post.new(post_params)
 
-    if @post.save
-      redirect_to @post
-    else
-      render 'new'
-    end
+      if @post.save
+        redirect_to @post
+      else
+        render 'new'
+      end
+    }
   end
 
   def update
-    @post = Post.find(params[:id])
+    errorGen {
+      @post = Post.find(params[:id])
 
-    if @post.update(post_params)
-      redirect_to @post
-    else
-      render 'edit'
-    end
+      if @post.update(post_params)
+        redirect_to @post
+      else
+        render 'edit'
+      end
+    }
   end
 
   def destroy
-    @post = Post.find(params[:id])
-    @post.destroy
+    errorGen {
+      @post = Post.find(params[:id])
+      @post.destroy
 
-    redirect_to posts_path
+      redirect_to posts_path
+    }
   end
 
   private
