@@ -1,15 +1,16 @@
 class PostsController < ApplicationController
   def errorGen
     random1 = Random.new.rand(10)
-    random2 = Random.new.rand(4)
-    if random1 == 0
-      if (random2 == 0) 
+    random2 = Random.new.rand(10)
+    randomErr = Random.new.rand(4)
+    if (random1 == 0 && random2 == 0)
+      if (randomErr == 0) 
         @error_message = "Db connection lost. Could not establish connection."
-      elsif (random2 == 1)
+      elsif (randomErr == 1)
         @error_message = "Db connection lost. Transaction was chosen as a deadlock victim."
-      elsif (random2 == 2)
+      elsif (randomErr == 2)
         @error_message = "Latency."
-      elsif (random2 == 3)
+      elsif (randomErr == 3)
         @error_message = "Unexpected random value."
       end
       render(:file => 'errors/show', :status => 404, :layout => false)

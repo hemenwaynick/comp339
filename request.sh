@@ -1,5 +1,5 @@
 #!/bin/bash
 for i in `seq 1 1000`;
 do
-    curl http://localhost:3000/posts/2
+    curl 10.11.12.50:80/posts/2
 done
